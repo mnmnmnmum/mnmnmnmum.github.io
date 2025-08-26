@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แนะนำตัว อรวรินทร์ จันทร์โพธิ์</title>
+    <style>
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: #ffe4e1; /* สีชมพูอ่อน */
+            color: #4b0082; /* สีม่วงเข้ม */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+        .container {
+            background-color: #fff0f5; /* สีชมพูอมขาว */
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 90%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .page {
+            display: none;
+            animation: fadeIn 1s ease-in-out;
+        }
+        .page.active {
+            display: block;
+        }
+        h1 {
+            color: #ff69b4; /* สีชมพูเข้ม */
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        h2 {
+            color: #da70d6; /* สีม่วงอมชมพู */
+            font-size: 1.8rem;
+            margin-top: 0;
+        }
+        p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .nav-buttons button {
+            background-color: #ff69b4;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+        .nav-buttons button:hover {
+            background-color: #ff1493;
+            transform: translateY(-3px);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+    <div id="page1" class="page active">
+        <h1>สวัสดีค่ะ ยินดีที่ได้รู้จักค่ะ! 🌸</h1>
+        <p>ชื่อ อรวรินทร์ จันทร์โพธิ์</p>
+        <p>ชื่อเล่น มีน</p>
+    </div>
+
+    <div id="page2" class="page">
+        <h1>ความสนใจของฉัน ✏️</h1>
+        <p>ฉันมีความสนใจในเรื่องการเขียนแบบ</p>
+        <p>และชอบวาดรูปเล่นในเวลาว่าง</p>
+    </div>
+
+    <div id="page3" class="page">
+        <h1>การศึกษา 🏫</h1>
+        <p>ปัจจุบันกำลังเรียนอยู่ที่โรงเรียน</p>
+        <p><strong>สุรธรรมพิทักษ์</strong></p>
+    </div>
+
+    <div id="page4" class="page">
+        <h1>งานอดิเรก 🎨</h1>
+        <p>งานอดิเรกของฉันคือ</p>
+        <p>อ่านการ์ตูน และเล่นดนตรี</p>
+    </div>
+
+    <div id="page5" class="page">
+        <h1>ขอบคุณที่รับชมค่ะ 💖</h1>
+        <p>หวังว่าเราจะได้มีโอกาสพูดคุยกันนะคะ!</p>
+    </div>
+
+    <div class="nav-buttons">
+        <button onclick="changePage(1)">1</button>
+        <button onclick="changePage(2)">2</button>
+        <button onclick="changePage(3)">3</button>
+        <button onclick="changePage(4)">4</button>
+        <button onclick="changePage(5)">5</button>
+    </div>
+</div>
+
+<script>
+    function changePage(pageNumber) {
+        const pages = document.querySelectorAll('.page');
+        pages.forEach(page => {
+            page.classList.remove('active');
+        });
+        document.getElementById('page' + pageNumber).classList.add('active');
+    }
+</script>
+
+</body>
+</html>
