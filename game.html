@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เกมทำพิซซ่า</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ff6b6b, #ffd93d, #6bcf7f, #4ecdc4);
+            background-size: 400% 400%;
+            animation: gradientMove 8s ease infinite;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .header {
+            position: relative;
+            text-align: center;
+            padding: 20px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .name-tag {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .game-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .game-area {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .pizza-area {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .pizza-base {
+            width: 250px;
+            height: 250px;
+            background: #f4c430;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            position: relative;
+            cursor: pointer;
+            border: 8px solid #d4a017;
+            transition: transform 0.3s ease;
+            overflow: hidden;
+        }
+
+        .pizza-base:hover {
+            transform: scale(1.05);
+        }
+
+        .ingredient {
+            position: absolute;
+            border-radius: 50%;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .cheese { background: #fff176; width: 20px; height: 20px; }
+        .pepperoni { background: #d32f2f; width: 25px; height: 25px; }
+        .mushroom { background: #8d6e63; width: 18px; height: 18px; }
+        .pepper { background: #4caf50; width: 15px; height: 15px; }
+        .tomato { background: #f44336; width: 22px; height: 22px; }
+
+        .ingredients-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .ingredient-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .ingredient-btn {
+            padding: 15px;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+            color: white;
+        }
+
+        .ingredient-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+        }
+
+        .cheese-btn { background: linear-gradient(135deg, #fff176, #ffeb3b); }
+        .pepperoni-btn { background: linear-gradient(135deg, #d32f2f, #f44336); }
+        .mushroom-btn { background: linear-gradient(135deg, #8d6e63, #a1887f); }
+        .pepper-btn { background: linear-gradient(135deg, #4caf50, #66bb6a); }
+        .tomato-btn { background: linear-gradient(135deg, #f44336, #ef5350); }
+
+        .controls {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .clear-btn, .bake-btn {
+            padding: 15px 30px;
+            margin: 10px;
+            border: none;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .clear-btn {
+            background: linear-gradient(135deg, #ff6b6b, #ff5252);
+        }
+
+        .bake-btn {
+            background: linear-gradient(135deg, #4ecdc4, #26a69a);
+        }
+
+        .clear-btn:hover, .bake-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+        }
+
+        .score {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .celebration {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255,255,255,0.95);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .game-area {
+                flex-direction: column;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .pizza-base {
+                width: 200px;
+                height: 200px;
+            }
+        }
+
+        .sparkle {
+            position: absolute;
+            color: #ffd700;
+            font-size: 20px;
+            animation: sparkle 2s infinite;
+            pointer-events: none;
+        }
+
+        @keyframes sparkle {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-50px) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="name-tag">Onwarin Chanpho</div>
+        <h1>🍕 เกมทำพิซซ่า 🍕</h1>
+        <p>คลิกเพิ่มส่วนผสมลงบนพิซซ่าของคุณ!</p>
+    </div>
+
+    <div class="score">
+        คะแนน: <span id="scoreValue">0</span> 🏆
+    </div>
+
+    <div class="game-container">
+        <div class="game-area">
+            <div class="pizza-area">
+                <h3>พิซซ่าของคุณ</h3>
+                <div class="pizza-base" id="pizzaBase">
+                    <div class="sparkle">✨</div>
+                </div>
+                <div class="controls">
+                    <button class="clear-btn" onclick="clearPizza()">🗑️ ล้างพิซซ่า</button>
+                    <button class="bake-btn" onclick="bakePizza()">🔥 อบพิซซ่า</button>
+                </div>
+            </div>
+
+            <div class="ingredients-panel">
+                <h3>เลือกส่วนผสม</h3>
+                <div class="ingredient-buttons">
+                    <button class="ingredient-btn cheese-btn" onclick="addIngredient('cheese')">🧀 ชีส</button>
+                    <button class="ingredient-btn pepperoni-btn" onclick="addIngredient('pepperoni')">🍖 เปปเปอโรนี</button>
+                    <button class="ingredient-btn mushroom-btn" onclick="addIngredient('mushroom')">🍄 เห็ด</button>
+                    <button class="ingredient-btn pepper-btn" onclick="addIngredient('pepper')">🫑 พริกหวาน</button>
+                    <button class="ingredient-btn tomato-btn" onclick="addIngredient('tomato')">🍅 มะเขือเทศ</button>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <p style="color: #666;">จำนวนส่วนผสม: <span id="ingredientCount">0</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="celebration" id="celebration">
+        <div style="font-size: 48px;">🎉</div>
+        <div>พิซซ่าของคุณพร้อมแล้ว!</div>
+        <div style="font-size: 14px; margin-top: 10px;">+10 คะแนน!</div>
+    </div>
+
+    <script>
+        let ingredients = [];
+        let score = 0;
+        let ingredientCount = 0;
+
+        function addIngredient(type) {
+            if (ingredientCount >= 20) {
+                alert('พิซซ่าเต็มแล้ว! กดอบพิซซ่าหรือล้างเพื่อเริ่มใหม่');
+                return;
+            }
+
+            const pizzaBase = document.getElementById('pizzaBase');
+            const ingredient = document.createElement('div');
+            ingredient.className = `ingredient ${type}`;
+            
+            // สุ่มตำแหน่ง
+            const angle = Math.random() * 2 * Math.PI;
+            const radius = Math.random() * 80 + 30; // ระยะจากกลาง
+            const x = Math.cos(angle) * radius + 110; // กลางของพิซซ่า
+            const y = Math.sin(angle) * radius + 110;
+            
+            ingredient.style.left = x + 'px';
+            ingredient.style.top = y + 'px';
+            
+            pizzaBase.appendChild(ingredient);
+            ingredients.push(ingredient);
+            ingredientCount++;
+            
+            updateIngredientCount();
+            createSparkle(x, y);
+            
+            // เสียงเอฟเฟกต์ (จำลอง)
+            playSound();
+        }
+
+        function clearPizza() {
+            const pizzaBase = document.getElementById('pizzaBase');
+            ingredients.forEach(ingredient => {
+                pizzaBase.removeChild(ingredient);
+            });
+            ingredients = [];
+            ingredientCount = 0;
+            updateIngredientCount();
+        }
+
+        function bakePizza() {
+            if (ingredientCount === 0) {
+                alert('เพิ่มส่วนผสมก่อนอบพิซซ่า!');
+                return;
+            }
+
+            // เพิ่มคะแนน
+            const points = ingredientCount * 2 + 10;
+            score += points;
+            document.getElementById('scoreValue').textContent = score;
+            
+            // แสดงข้อความแสดงความยินดี
+            showCelebration();
+            
+            // ล้างพิซซ่าหลังจาก 2 วินาที
+            setTimeout(() => {
+                clearPizza();
+            }, 2000);
+        }
+
+        function updateIngredientCount() {
+            document.getElementById('ingredientCount').textContent = ingredientCount;
+        }
+
+        function showCelebration() {
+            const celebration = document.getElementById('celebration');
+            celebration.style.display = 'block';
+            
+            setTimeout(() => {
+                celebration.style.display = 'none';
+            }, 2000);
+        }
+
+        function createSparkle(x, y) {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.textContent = '✨';
+            sparkle.style.left = x + 'px';
+            sparkle.style.top = y + 'px';
+            
+            document.getElementById('pizzaBase').appendChild(sparkle);
+            
+            setTimeout(() => {
+                if (sparkle.parentNode) {
+                    sparkle.parentNode.removeChild(sparkle);
+                }
+            }, 2000);
+        }
+
+        function playSound() {
+            // จำลองเสียงด้วยการสั่นหน้าจอเล็กน้อย
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
+        }
+
+        // เพิ่มเอฟเฟกต์พิเศษเมื่อคลิกพิซซ่า
+        document.getElementById('pizzaBase').addEventListener('click', function(e) {
+            if (ingredientCount > 0) {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                createSparkle(x, y);
+            }
+        });
+
+        // เริ่มเกมด้วยข้อความต้อนรับ
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                alert('🍕 ยินดีต้อนรับสู่เกมทำพิซซ่า! เริ่มเพิ่มส่วนผสมลงบนพิซซ่าของคุณเลย! 🍕');
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
